@@ -1,4 +1,4 @@
-module go.badoo.dev/kafkatopichelper
+module github.com/mkevac/kafkatopichelper
 
 go 1.15
 
