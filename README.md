@@ -20,4 +20,8 @@ I don't know why, but configuration altering in sarama kafka library (and seems 
 Kafka itself too) is very strange. When you set some parameters, other parameters are overwritten
 with default values.
 
-So always set all parameters that are different than default values.
+kafkatopichelper set mode updates only requested params ie:
+- requests current topic configuration
+- sets parameters, specified in command line,
+  to current topic configuration
+- updates topic config
