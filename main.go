@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/Shopify/sarama"
@@ -240,11 +241,14 @@ func setCmdHandler(cmd *cobra.Command, args []string) {
 
 	fmt.Println("Going to update these values: {")
 	newConfigValues := make(map[string]*string)
-	for _, item := range strings.Split(config.values, ",") {
-		kv := strings.Split(item, "=")
-		newConfigValues[kv[0]] = &kv[1]
 
-		fmt.Printf("\t%s: %s\n", kv[0], kv[1])
+	re := regexp.MustCompile(`([a-z]*\.?)*=((?:"(?:([a-z]|\d)*(?:\.|\,)?)*")|(?:(?:[a-z]|\d)*\.?)*)`)
+	for _, item := range re.FindAllString(config.values, -1) {
+		kv := strings.Split(item, "=")
+		value := strings.ReplaceAll(kv[1], "\"", "")
+		newConfigValues[kv[0]] = &value
+
+		fmt.Printf("\t%s: %s\n", kv[0], value)
 	}
 	fmt.Println("}")
 
